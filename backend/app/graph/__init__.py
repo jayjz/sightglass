@@ -1,3 +1,1 @@
-from app.graph.builder import get_graph
-
-__all__ = ["get_graph"]
+# Graph package. Import builder.get_graph at the call site to avoid import cycles.
