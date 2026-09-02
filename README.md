@@ -16,33 +16,31 @@ Most AI wrappers act as black boxes, exposing businesses to cloud latency, data 
 ```mermaid
 graph LR
     subgraph Edge ["Field Edge (PWA)"]
-        Tech[Technician Input]
-        DB[(IndexedDB)]
+        Tech["Technician Input"]
+        DB[("IndexedDB")]
         Tech --> DB
     end
 
     subgraph ControlPlane ["Control Plane (FastAPI)"]
-        API[REST API]
-        Graph[LangGraph State Machine]
+        API["REST API"]
+        Graph["LangGraph State Machine"]
         API --> Graph
     end
 
     subgraph Compute ["Local Compute"]
-        Ollama[Ollama / RTX 4060]
+        Ollama["Ollama / RTX 4060"]
         Graph --> Ollama
     end
 
     subgraph Frontend ["Sightglass Dashboard"]
-        BizPane[Business Pane (Next.js / Shadcn)]
-        EngPane[Engineering Pane (React Flow)]
+        BizPane["Business Pane (Next.js / Shadcn)"]
+        EngPane["Engineering Pane (React Flow)"]
     end
 
     DB -- "Sync /api/sync" --> API
     Graph -- "SSE Stream" --> BizPane
     Graph -- "SSE Stream" --> EngPane
     EngPane -. "Human Interrupt (/api/resume)" .-> API
-
-```
 
 ##  The Stack
 
