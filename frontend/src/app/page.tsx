@@ -58,13 +58,12 @@ export default function Home() {
     }
     if (event.node && event.status === "running") {
       setActiveNode(event.node);
-      if (event.node === "hitl") setPaused(true);
     }
     if (event.node && event.status === "completed") {
       setCompletedNodes((prev) => (prev.includes(event.node!) ? prev : [...prev, event.node!]));
       if (event.node === "hitl") setPaused(false);
     }
-    if (event.status === "paused" || event.event === "paused" || event.node === "hitl") {
+    if (event.status === "paused" || event.event === "paused") {
       setPaused(true);
       setActiveNode("hitl");
     }
@@ -161,7 +160,7 @@ export default function Home() {
             <p className="text-sm text-muted">Local-first HVAC control plane</p>
           </div>
         </div>
-        <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-[0.18em] text-muted">
+        <div className="flex items-center gap-2 whitespace-nowrap font-mono text-xs uppercase tracking-[0.18em] text-muted">
           <span
             className={
               headerStatus === "live"

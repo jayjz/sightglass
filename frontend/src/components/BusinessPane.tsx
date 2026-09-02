@@ -30,8 +30,7 @@ export function BusinessPane({
   onProcess,
   onApprove,
 }: Props) {
-  const hitlEvent = events.some((e) => e.node === "hitl");
-  const showApprove = paused || hitlEvent;
+  const showApprove = paused;
   const interruptMessage =
     snapshot.inventory_status?.cost != null
       ? `Cost $${snapshot.inventory_status.cost} exceeds the $500 risk gate. Awaiting human approval.`
