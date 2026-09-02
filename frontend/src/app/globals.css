@@ -1,26 +1,81 @@
 @import "tailwindcss";
+@import "@xyflow/react/dist/style.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-bg: #0c1014;
+  --color-background: #0c1014;
+  --color-surface: #141a21;
+  --color-surface-2: #1b232c;
+  --color-fg: #e8eef4;
+  --color-foreground: #e8eef4;
+  --color-card: #141a21;
+  --color-card-foreground: #e8eef4;
+  --color-popover: #141a21;
+  --color-popover-foreground: #e8eef4;
+  --color-primary: #3ee0c5;
+  --color-primary-foreground: #0c1014;
+  --color-secondary: #1b232c;
+  --color-secondary-foreground: #e8eef4;
+  --color-muted: #8b9aab;
+  --color-muted-foreground: #8b9aab;
+  --color-accent: #1b232c;
+  --color-accent-foreground: #e8eef4;
+  --color-destructive: #c45c4a;
+  --color-border: #243040;
+  --color-input: #243040;
+  --color-ring: #3ee0c5;
+  --color-cyan: #3ee0c5;
+  --color-active: #5ee0a0;
+  --color-warn: #e8b86d;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  --radius: 0.75rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  html,
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    min-height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.sightglass-lens {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  border: 2px solid var(--color-cyan);
+  box-shadow:
+    inset 0 0 10px color-mix(in oklab, var(--color-cyan) 55%, transparent),
+    0 0 14px color-mix(in oklab, var(--color-cyan) 35%, transparent);
+  background: radial-gradient(circle at 35% 30%, #9ff7e8, #12332e 55%, #0c1014 70%);
+}
+
+.node-glow-active {
+  box-shadow: 0 0 0 1px var(--color-active), 0 0 22px color-mix(in oklab, var(--color-active) 55%, transparent);
+}
+
+.node-glow-paused {
+  box-shadow: 0 0 0 1px var(--color-warn), 0 0 22px color-mix(in oklab, var(--color-warn) 45%, transparent);
+}
+
+.react-flow__node {
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node-glow-active,
+  .node-glow-paused {
+    box-shadow: 0 0 0 1px currentColor;
+  }
 }
