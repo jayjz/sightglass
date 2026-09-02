@@ -1,43 +1,21 @@
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
-import asyncio
-import json
+"""Shim so `uvicorn main:app` still works from the repo root."""
 
-app = FastAPI(title="Sightglass Control Plane")
+import importlib.util
+import sys
+from pathlib import Path
 
-# Allow Next.js to talk to FastAPI
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+BACKEND = Path(__file__).resolve().parent / "backend"
+if str(BACKEND) not in sys.path:
+    sys.path.insert(0, str(BACKEND))
 
-async def event_generator():
-    """
-    Simulates LangGraph state transitions.
-    In Week 2, this will be replaced by actual LangGraph astream_events.
-    """
-    states = [
-        {"node": "intake", "status": "running", "data": {"ticket": "Trane XR14 compressor shorted. Need replacement."}},
-        {"node": "inventory_check", "status": "running", "data": {"part": "Compressor", "in_stock": True, "cost": 1250}},
-        {"node": "risk_gate", "status": "paused", "data": {"reason": "Cost > $500. Awaiting Human Approval."}}
-    ]
-    for state in states:
-        # Format for Server-Sent Events (SSE)
-        yield f"data: {json.dumps(state)}\n\n"
-        await asyncio.sleep(1.5)
-    yield "data: [DONE]\n\n"
+spec = importlib.util.spec_from_file_location("sightglass_backend", BACKEND / "main.py")
+if spec is None or spec.loader is None:
+    raise ImportError("Unable to load backend/main.py")
+module = importlib.util.module_from_spec(spec)
+sys.modules["sightglass_backend"] = module
+spec.loader.exec_module(module)
 
-@app.get("/api/stream")
-async def stream():
-    return StreamingResponse(event_generator(), media_type="text/event-stream")
+app = module.app
+event_generator = module.event_generator
 
-@app.post("/api/sync")
-async def sync(payload: dict):
-    """
-    Receives offline payloads from the technician's PWA.
-    """
-    return {"status": "synced", "payload": payload}
+__all__ = ["app", "event_generator"]
