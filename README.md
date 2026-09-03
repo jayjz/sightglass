@@ -1,10 +1,15 @@
+The issue is a missing closing code fence (`````) at the end of your Mermaid diagram. Because it wasn't closed, GitHub tries to render the rest of your README as part of the diagram, which breaks the whole page. There was also a rogue set of backticks at the very end of the file.
+
+Here is the fully repaired syntax, dantrader. Just copy and paste this directly into your `README.md`:
+
+```markdown
 # Sightglass 🔍
 
 **Sightglass** is an open-source, local-first agentic control plane designed for high-stakes field operations (HVAC, plumbing, electrical). 
 
 Most AI wrappers act as black boxes, exposing businesses to cloud latency, data leakage, and hallucinated purchase orders. Sightglass solves this by making the invisible engineering visible. It executes complex, multi-step LLM reasoning entirely on local hardware and streams the live LangGraph state transitions directly to a split-screen dashboard via Server-Sent Events (SSE). 
 
-##  Core Capabilities
+## Core Capabilities
 
 * **Split-Screen Observability:** A Next.js dual-pane dashboard. The **Business Pane** handles dispatcher logic, while the **Engineering Pane** visualizes the LangGraph state machine in real-time using React Flow.
 * **Air-Gapped Inference:** LLM extraction and reasoning are powered entirely by local models (`llama3.1:8b`) via Ollama, ensuring 0% data leakage and zero API token costs.
@@ -42,7 +47,9 @@ graph LR
     Graph -- "SSE Stream" --> EngPane
     EngPane -. "Human Interrupt (/api/resume)" .-> API
 
-##  The Stack
+```
+
+## The Stack
 
 * **AI & Orchestration:** LangGraph, LangChain Core, Ollama (Llama 3.1 8B), Pydantic (Structured Outputs).
 * **Backend:** Python, FastAPI, Uvicorn, Server-Sent Events (SSE).
@@ -55,7 +62,7 @@ graph LR
 3. **`Routing (Edge)`:** Evaluates business logic. If `cost > $500`, routes to `HITL`. Otherwise, routes to `END`.
 4. **`HITL`:** Checkpoints the graph state to memory and suspends execution until the frontend issues a `/api/resume` POST request.
 
-##  Local Development Setup
+## Local Development Setup
 
 Sightglass is designed to run on consumer-grade hardware (e.g., an NVIDIA RTX 4060) without requiring enterprise cloud budgets.
 
@@ -91,3 +98,4 @@ Open `http://localhost:3000` in your browser. Submit a mock field ticket on the 
 
 ```
 
+```
