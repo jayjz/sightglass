@@ -1,8 +1,3 @@
-The issue is a missing closing code fence (`````) at the end of your Mermaid diagram. Because it wasn't closed, GitHub tries to render the rest of your README as part of the diagram, which breaks the whole page. There was also a rogue set of backticks at the very end of the file.
-
-Here is the fully repaired syntax, dantrader. Just copy and paste this directly into your `README.md`:
-
-```markdown
 # Sightglass 🔍
 
 **Sightglass** is an open-source, local-first agentic control plane designed for high-stakes field operations (HVAC, plumbing, electrical). 
